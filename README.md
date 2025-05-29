@@ -4,42 +4,30 @@ A robust and secure authentication module for **NestJS**, using **Prisma ORM**, 
 
 ---
 
-* ✅ JWT-based auth via HTTP-only cookies and optional Bearer header
-* ✅ User registration and login
-* ✅ Email verification with JWT token links
-* ✅ Role-based access control (RBAC)
-* ✅ Swagger support with cookie + bearer authentication
-* ✅ CLI tool to scaffold modules with service/controller/dto
-* 🚧 Future support for Google and GitHub OAuth
-
----
-
 ## 🔐 Features
 
 * ✅ User registration and login
 * ✅ Password hashing with `bcrypt`
 * ✅ JWT authentication via:
 
-  * Secure **HTTP-only cookies** (primary)
-  * Authorization **Bearer header** (fallback)
+  ✅ Secure **HTTP-only cookies** (primary)
+  ✅ Authorization **Bearer header** (fallback)
 * ✅ Email verification flow:
 
-  * Verification email with JWT link on registration
-  * Endpoint for verifying tokens
-  * Resend verification feature
+  ✅ Verification email with JWT link on registration
+  ✅ Endpoint for verifying tokens
+  ✅ Resend verification feature
 * ✅ OAuth2 login support:
 
-  * Google OAuth2 (via Passport.js)
-  * GitHub OAuth2 (via Passport.js)
-  * Automatically issues JWT and sets it as a cookie
+  ✅ Google OAuth2 (via Passport.js)
+  ✅ GitHub OAuth2 (via Passport.js)
+  ✅ Automatically issues JWT and sets it as a cookie
 * ✅ Role-based access guard with `@Roles()` decorator
 * ✅ Swagger API documentation for all endpoints
 * ✅ Prisma ORM integration with generated DTOs
 * ✅ CLI scaffolding for modules (controller, service, DTOs)
 
 ---
-
-
 
 ## 🛠 Tech Stack
 
@@ -48,7 +36,7 @@ A robust and secure authentication module for **NestJS**, using **Prisma ORM**, 
 - [Passport.js](http://www.passportjs.org/)
 - [JWT](https://jwt.io/)
 - [Swagger](https://swagger.io/)
-- [OAuth2](https://oauth.net/2/) (Google, GitHub — planned)
+- [OAuth2](https://oauth.net/2/) (Google, GitHub)
 
 ---
 
