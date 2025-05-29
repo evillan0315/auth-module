@@ -36,72 +36,7 @@ import { UploadImageDto } from './dto/upload-image.dto';
 export class UtilsController {
   constructor(private readonly utilsService: UtilsService) {}
 
-  @Post('convert-to-svg')
-  @ApiOperation({ summary: 'Convert an image to SVG' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: { type: 'string', format: 'binary' },
-        color: {
-          type: 'string',
-          example: '#000000',
-          description: 'Fill color of the SVG output',
-        },
-        width: {
-          type: 'string',
-          example: '512',
-          description: 'Resize width',
-        },
-        height: {
-          type: 'string',
-          example: '512',
-          description: 'Resize height',
-        },
-      },
-    },
-  })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (_req, file, cb) => {
-          const ext = path.extname(file.originalname);
-          const name = path.basename(file.originalname, ext);
-          cb(null, `${name}${ext}`);
-        },
-      }),
-    }),
-  )
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: UploadImageDto,
-  ) {
-    let tempPath;
-    if (file) {
-      tempPath = `./uploads/${file.originalname}`;
-    }
-    const { color = '#000000', width, height } = body;
-
-    const result = await this.utilsService.convertToSvg(
-      tempPath,
-      color,
-      width,
-      height,
-    );
-
-    fs.unlinkSync(tempPath);
-
-    return {
-      message: 'SVG conversion successful',
-      color,
-      width,
-      height,
-      svg: result.svg,
-      savedPath: result.filePath,
-    };
-  }
+ 
   @Post('json-to-env')
   @ApiOperation({
     summary: 'Upload JSON file or provide JSON body to convert to .env',

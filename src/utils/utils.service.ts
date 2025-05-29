@@ -5,8 +5,6 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import * as sharp from 'sharp';
-import * as potrace from 'potrace';
 import * as fs from 'fs';
 import * as path from 'path';
 import { lookup as mimeLookup } from 'mime-types';
@@ -25,48 +23,7 @@ export class UtilsService {
       fs.mkdirSync(this.outputDir);
     }
   }
-  async convertToSvg(
-    filePath: string,
-    color = '#000000',
-    width: string = '512',
-    height: string = '512',
-  ): Promise<{ svg: string; filePath: string }> {
-    try {
-      const tempPngPath = this.getTempPngPath(filePath);
-
-      await sharp(filePath)
-        .resize(parseInt(width), parseInt(height)) // ← use custom size
-        .threshold(128)
-        .toFile(tempPngPath);
-
-      const tracer = new potrace.Potrace({
-        threshold: 128,
-        color: color,
-        optTolerance: 0.4,
-        background: 'transparent',
-      });
-
-      const svg: string = await new Promise((resolve, reject) => {
-        tracer.loadImage(tempPngPath, function (err) {
-          if (err) return reject(err);
-          resolve(this.getSVG());
-        });
-      });
-
-      fs.unlinkSync(tempPngPath);
-
-      const svgFilename = `svg-${Date.now()}.svg`;
-      const svgPath = path.join(this.outputDir, svgFilename);
-      fs.writeFileSync(svgPath, svg, 'utf-8');
-
-      return { svg, filePath: svgPath };
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Image to SVG conversion failed: ${error.message}`,
-      );
-    }
-  }
-
+  
   // Parses basic SELECT SQL to JSON
   parseSqlToJson(sql: string) {
     const selectRegex = /SELECT (.+) FROM (\w+)(?: WHERE (.+))?/i;

@@ -49,38 +49,6 @@ export class AppController {
     };
   }
 
-  @Get('dashboard')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN, UserRole.USER, UserRole.MANAGER)
-  @Render('pages/dashboard')
-  @ApiOperation({ summary: 'Render protected dashboard page' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Dashboard rendered' })
-  @ApiResponse({ status: 403, description: 'Forbidden - insufficient role' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  getDashboard(@CurrentUser() user: any) {
-    return {
-      title: 'Dashboard',
-      message: `Welcome to your dashboard, ${user.name}`,
-      isAuthenticated: Boolean(user),
-    };
-  }
-  @Get('terminal')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
-  @Render('pages/terminal')
-  @ApiOperation({ summary: 'Render protected terminal page' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Terminal rendered' })
-  @ApiResponse({ status: 403, description: 'Forbidden - insufficient role' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  getTerminal(@CurrentUser() user: any) {
-    return {
-      title: 'Terminal',
-      message: `Welcome to your terminal, ${user.name}`,
-      isAuthenticated: Boolean(user),
-    };
-  }
   @Get('login')
   @Render('pages/login')
   @ApiOperation({ summary: 'Render login page' })
@@ -98,7 +66,7 @@ export class AppController {
       try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
         if (payload) {
-          return res.redirect('/terminal');
+          return res.redirect('/');
         }
       } catch (err) {
         // Token invalid or expired; continue rendering login
@@ -124,7 +92,7 @@ export class AppController {
   }
 
   @Post('login')
-  @Redirect('/terminal')
+  @Redirect('/')
   @ApiOperation({ summary: 'Log in a user and set JWT cookie' })
   @ApiBody({ type: LoginDto })
   @ApiResponse({
@@ -142,7 +110,7 @@ export class AppController {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
     });
-    return { url: '/terminal' };
+    return { url: '/' };
   }
   @Post('logout')
   @Redirect('/login')
