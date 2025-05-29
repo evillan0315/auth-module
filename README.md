@@ -54,39 +54,76 @@ A robust and secure authentication module for **NestJS**, using **Prisma ORM**, 
 
 ## 🚀 Getting Started
 
-### 1. Clone and install
+### 1. Clone and Install
 
 ```bash
 git clone https://github.com/evillan0315/auth-module.git
 cd auth-module
-npm install
-```
+pnpm install
+````
 
 ### 2. Environment Configuration
 
-Create a `.env` file:
+Create a `.env` file in the root of the project and populate it with the following **sample values**:
 
 ```env
-DATABASE_URL="postgresql://..."
-JWT_SECRET="your_jwt_secret"
-GOOGLE_CLIENT_ID="your_google_client_id"
-GOOGLE_CLIENT_SECRET="your_google_client_secret"
-GITHUB_CLIENT_ID="your_github_client_id"
-GITHUB_CLIENT_SECRET="your_github_client_secret"
+# JWT Configuration
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+JWT_VERIFICATION_SECRET=your_verification_secret
+JWT_VERIFICATION_EXPIRES_IN="1d"
+SESSION_SECRET=your_session_secret
+
+# General App Configuration
+PROVIDER_ID=your_provider_id
+PORT=3000
+SWAGGER_ENABLED=true
+BASE_URL=http://localhost:3000
+
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
+
+# Mail Configuration
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USER="your_email@example.com"
+MAIL_PASS="your_email_password"
+MAIL_FROM=no-reply@example.com
+
+# AWS Credentials
+AWS_REGION=your_aws_region
+
+# Google OAuth2
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+# GOOGLE_CALLBACK_URL=https://your-production-domain.com/api/auth/google/callback
+
+# GitHub OAuth2
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_CALLBACK_URL=http://localhost:5000/api/auth/github/callback
+# GITHUB_CALLBACK_URL=https://your-production-domain.com/api/auth/github/callback
+GITHUB_TOKEN=your_github_personal_access_token
 ```
+
+> ⚠️ **Important:** Do not commit your actual environment variable values to version control. Always use a `.env.example` file to share expected variables.
 
 ### 3. Generate Prisma Client
 
 ```bash
-npx prisma generate
-npx prisma migrate dev --name init
+pnpm prisma generate
+pnpm prisma migrate dev --name init
 ```
 
-### 4. Run the application
+### 4. Run the Application
 
 ```bash
-npm run start:dev
+pnpm run start:dev
 ```
+
+> ✅ Your frontend application will typically run on port `5173` (or as configured in Vite), while the backend listens on `PORT=5001`.
+
 
 ### 5. Swagger API
 
@@ -185,14 +222,13 @@ curl http://localhost:3000/auth/me \
 
 ---
 
-## 🌍 OAuth2 Integration (Coming Soon)
+## 🌍 OAuth2 Integration
 
 Planned support for:
 
 * 🔗 Google
 * 🐱 GitHub
 
-Here’s an example of how you could document the new feature (`createdBy` detection and handling in the service template) in your `README.md`:
 
 ---
 
@@ -243,8 +279,8 @@ This works in conjunction with the `libs/protected-models.ts` configuration, whi
 ```
 auth/
 ├── strategies/
-│   ├── google.strategy.ts      # Google OAuth (planned)
-│   └── github.strategy.ts      # GitHub OAuth (planned)
+│   ├── google.strategy.ts      # Google OAuth
+│   └── github.strategy.ts      # GitHub OAuth
 ├── sessions/
 │   └── session.service.ts      # Session persistence via Prisma
 ```

@@ -79,6 +79,6 @@ async function bootstrap() {
   // Graceful shutdown setup
   app.enableShutdownHooks(); // Handle graceful shutdown
   await app.listen(port);
-  logger.log(`Application is running on: ${base_url}:${port}`);
+  logger.log(`Application is running on: ${base_url}`);
 }
 bootstrap();
